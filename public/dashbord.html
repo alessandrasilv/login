@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de gerenciamento de Pet Shop - Dashboard</title>
+
+    <style>
+        /* Reset e configurações básicas */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Corpo da página */
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 28px;
+
+            background: #0f0c1b;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Brilhos lilás no fundo */
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        body::before {
+            width: 320px;
+            height: 320px;
+            background: #a855f7;
+            top: 10%;
+            left: 15%;
+            opacity: 0.6;
+        }
+
+        body::after {
+            width: 380px;
+            height: 380px;
+            background: #c084fc;
+            bottom: 10%;
+            right: 15%;
+            opacity: 0.5;
+        }
+
+        /* Título / mensagem de boas-vindas */
+        #boasVindas {
+            position: relative;
+            z-index: 2;
+
+            width: min(90%, 700px);
+            padding: 45px 40px;
+
+            color: #f3e8ff;
+            font-size: 2rem;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 1px;
+
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(216, 180, 254, 0.2);
+            border-radius: 20px;
+
+            backdrop-filter: blur(16px);
+
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, 0.5),
+                0 0 15px rgba(168, 85, 247, 0.2);
+        }
+
+        /* Pequeno brilho no título */
+        #boasVindas::after {
+            content: '';
+            display: block;
+
+            width: 70px;
+            height: 3px;
+
+            margin: 18px auto 0;
+
+            background: linear-gradient(
+                90deg,
+                #a855f7,
+                #c084fc
+            );
+
+            border-radius: 10px;
+
+            box-shadow: 0 0 12px rgba(192, 132, 252, 0.7);
+        }
+
+        /* Botão Sair */
+        #btnLogout {
+            position: relative;
+            z-index: 2;
+
+            min-width: 150px;
+            padding: 13px 28px;
+
+            background: linear-gradient(
+                135deg,
+                #a855f7 0%,
+                #7e22ce 100%
+            );
+
+            border: none;
+            border-radius: 10px;
+
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 4px 15px rgba(168, 85, 247, 0.4);
+
+            transition: all 0.3s ease;
+        }
+
+        /* Hover do botão */
+        #btnLogout:hover {
+            background: linear-gradient(
+                135deg,
+                #c084fc 0%,
+                #9333ea 100%
+            );
+
+            box-shadow:
+                0 6px 20px rgba(168, 85, 247, 0.6);
+
+            transform: translateY(-2px);
+        }
+
+        /* Clique */
+        #btnLogout:active {
+            transform: translateY(0);
+        }
+
+        #btnCadastro {
+            position: relative;
+            z-index: 2;
+
+            min-width: 150px;
+            padding: 13px 28px;
+
+            background: linear-gradient(
+                135deg,
+                #a855f7 0%,
+                #7e22ce 100%
+            );
+
+            border: none;
+            border-radius: 10px;
+
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 4px 15px rgba(168, 85, 247, 0.4);
+
+            transition: all 0.3s ease;
+        }
+
+        /* Hover do botão */
+        #btnCadastro:hover {
+            background: linear-gradient(
+                135deg,
+                #c084fc 0%,
+                #9333ea 100%
+            );
+
+            box-shadow:
+                0 6px 20px rgba(168, 85, 247, 0.6);
+
+            transform: translateY(-2px);
+        }
+
+        /* Clique */
+        #btnCadastro:active {
+            transform: translateY(0);
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+
+            body {
+                gap: 20px;
+                padding: 20px;
+            }
+
+            #boasVindas {
+                width: 100%;
+                padding: 35px 20px;
+                font-size: 1.5rem;
+            }
+
+            #btnLogout {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1 id="boasVindas">Dashboard - Bem-vindo!</h1>
+    <button id="btnCadastro">Cadastrar Novo Pet</button>
+    <button id="btnLogout">Sair</button>
+
+    <script>
+       const usuarioSalvo = localStorage.getItem('usuarioLogado');
+
+        if (!usuarioSalvo || usuarioSalvo === 'undefined') {
+            window.location.href = 'index.html';
+        } else {
+            const usuarioDados = JSON.parse(usuarioSalvo);
+            document.getElementById('boasVindas').innerText =
+                `Dashboard - Bem-vindo, ${usuarioDados.email}!`;
+        }
+
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            localStorage.removeItem('usuarioLogado');
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
